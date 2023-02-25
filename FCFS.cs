@@ -1,4 +1,3 @@
-// See https://aka.ms/new-console-template for more information
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,7 +20,6 @@ namespace CPUSCHED
 
             //Pang run nung algo
             RunFCFS(processes);
-        
             Console.ReadKey();
         }
 
@@ -47,8 +45,11 @@ namespace CPUSCHED
 
                 Console.Write("{0} ", process.Name);
 
-                totalWaitingTime += currentTime - process.ArrivalTime;
-                totalTurnaroundTime += currentTime - process.ArrivalTime + process.BurstTime;
+                process.WaitingTime = currentTime - process.ArrivalTime;
+                process.TurnaroundTime = currentTime - process.ArrivalTime + process.BurstTime;
+
+                totalWaitingTime += process.WaitingTime;
+                totalTurnaroundTime += process.TurnaroundTime;
 
                 currentTime += process.BurstTime;
             }
@@ -58,7 +59,13 @@ namespace CPUSCHED
 
             Console.WriteLine("\n\nAverage waiting time: {0:F2}", averageWaitingTime);
             Console.WriteLine("Average turnaround time: {0:F2}", averageTurnaroundTime);
-            Console.WriteLine();
+
+            Console.WriteLine("\nWaiting Times:");
+
+            foreach (Process process in sortedProcesses)
+            {
+                Console.WriteLine("{0}: {1}", process.Name, process.WaitingTime);
+            }
         }
 
         static void ShowAverageTimes(List<Process> processes)
@@ -89,7 +96,7 @@ public class Process
     public int Priority { get; set; }
     public int WaitingTime { get; set; }
     public int TurnaroundTime { get; set; }
-    public int FinishTime { get; set; } // new property
+    public int FinishTime { get; set; }
 
 }
 
