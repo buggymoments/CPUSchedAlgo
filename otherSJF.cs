@@ -25,7 +25,7 @@ namespace CPUSCHED
 
         static void RunSJF(List<Process> processes)
         {
-            List<Process> sortedProcesses = processes.OrderBy(p => p.BurstTime).ToList();
+            List<Process> sortedProcesses = processes.OrderBy(p => p.ArrivalTime).ThenBy(p => p.BurstTime).ToList();
 
             int currentTime = 0;
             double totalWaitTime = 0;
@@ -41,23 +41,23 @@ namespace CPUSCHED
 
                 // Execute the next process
                 sortedProcesses.Remove(nextProcess);
-                nextProcess.WaitingTime = currentTime - nextProcess.ArrivalTime; // calculate waiting time for the process
-                totalWaitTime += nextProcess.WaitingTime;
                 totalTurnaroundTime += currentTime + nextProcess.BurstTime - nextProcess.ArrivalTime;
                 currentTime += nextProcess.BurstTime;
+                nextProcess.FinishTime = currentTime;
+                totalWaitTime += nextProcess.WaitingTime;
             }
 
             Console.WriteLine("Execution Order: {0}", string.Join(" -> ", processes.OrderBy(p => p.FinishTime).Select(p => p.Name)));
             Console.WriteLine("Average Waiting Time: {0:F2}", totalWaitTime / processes.Count);
             Console.WriteLine("Average Turnaround Time: {0:F2}", totalTurnaroundTime / processes.Count);
-            
+
             Console.WriteLine("Waiting times:");
             foreach (Process process in processes)
             {
+                process.WaitingTime = process.FinishTime - process.ArrivalTime - process.BurstTime;
                 Console.WriteLine("{0}: {1}", process.Name, process.WaitingTime);
             }
         }
-
 
 
         public class Process
