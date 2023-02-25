@@ -97,6 +97,4 @@ public class Process
     public int WaitingTime { get; set; }
     public int TurnaroundTime { get; set; }
     public int FinishTime { get; set; }
-
 }
-
