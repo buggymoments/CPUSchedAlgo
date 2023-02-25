@@ -58,9 +58,7 @@ namespace CPUSCHED
                 Console.WriteLine("{0}: {1}", process.Name, process.WaitingTime);
             }
         }
-
-
-
+        
         public class Process
         {
             public string Name { get; set; }
@@ -69,7 +67,7 @@ namespace CPUSCHED
             public int Priority { get; set; }
             public int WaitingTime { get; set; }
             public int TurnaroundTime { get; set; }
-            public int FinishTime { get; set; } // new property
+            public int FinishTime { get; set; }
         }
     }
 }
