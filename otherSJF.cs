@@ -44,6 +44,7 @@ namespace CPUSCHED
                 totalTurnaroundTime += currentTime + nextProcess.BurstTime - nextProcess.ArrivalTime;
                 currentTime += nextProcess.BurstTime;
                 nextProcess.FinishTime = currentTime;
+                nextProcess.WaitingTime = currentTime - nextProcess.ArrivalTime - nextProcess.BurstTime;
                 totalWaitTime += nextProcess.WaitingTime;
             }
 
@@ -54,10 +55,10 @@ namespace CPUSCHED
             Console.WriteLine("Waiting times:");
             foreach (Process process in processes)
             {
-                process.WaitingTime = process.FinishTime - process.ArrivalTime - process.BurstTime;
                 Console.WriteLine("{0}: {1}", process.Name, process.WaitingTime);
             }
         }
+
 
 
         public class Process
@@ -72,4 +73,3 @@ namespace CPUSCHED
         }
     }
 }
-
